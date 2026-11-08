@@ -47,7 +47,7 @@ st.set_page_config(
     page_title="WeedVision | AI weed detection",
     page_icon="🌱",
     layout="wide",
-    initial_sidebar_state="auto",
+    initial_sidebar_state="collapsed",
 )
  
 NAV_LABELS = {
@@ -80,134 +80,145 @@ def _furrow_svg() -> str:
  
 CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap');
- 
-:root{
-  --forest:#0E2B1E; --forest-2:#143A29; --emerald:#12B76A; --emerald-d:#0B8F52;
-  --moss:#5F8F6B; --charcoal:#1E2421; --ink-2:#4A544E; --ivory:#F5F7F3;
-  --card:#FFFFFF; --line:#DDE5DD; --amber:#D9A441; --red:#C2493D;
-  --serif:'Fraunces', 'Iowan Old Style', Georgia, serif;
-  --sans:'Manrope', 'Segoe UI', system-ui, -apple-system, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap');
+:root {
+  --forest:#DDF5E6; --forest-2:#173B2A; --emerald:#20D889; --emerald-d:#35E39A;
+  --moss:#8EB99B; --charcoal:#F1F7F2; --ink-2:#B5C7BA; --ivory:#09140E;
+  --card:#12231A; --line:#294536; --amber:#E6BD63; --red:#FF8178;
+  --serif:'Fraunces','Iowan Old Style',Georgia,serif;
+  --sans:'Manrope','Segoe UI',system-ui,-apple-system,sans-serif;
 }
-html, body, [class*="st-"], .stApp { font-family: var(--sans); }
-[data-testid="stIconMaterial"], [data-testid="stIconMaterial"] *, span[translate="no"][role="img"] {
-  font-family: "Material Symbols Rounded", "Material Icons" !important; }
-.stApp { background: var(--ivory); color: var(--charcoal); }
- 
-/* chrome */
-#MainMenu, footer, [data-testid="stDecoration"], .stDeployButton,
-[data-testid="stAppDeployButton"], [data-testid="stStatusWidget"] { display:none !important; }
-header[data-testid="stHeader"] { background: transparent; }
-[data-testid="stMainBlockContainer"], .block-container {
-  padding-top: 2.2rem; padding-bottom: 4rem; max-width: 1280px;
-}
- 
-/* sidebar */
-[data-testid="stSidebar"] { background: var(--forest); border-right: 1px solid rgba(255,255,255,.06); }
-[data-testid="stSidebar"] * { color: #E6EFE8; }
-[data-testid="stSidebar"] [role="radiogroup"] { gap: .25rem; }
-[data-testid="stSidebar"] [role="radiogroup"] label {
-  padding: .62rem .85rem; border-radius: 10px; width: 100%;
-  transition: background .15s ease; cursor: pointer;
-}
-[data-testid="stSidebar"] [role="radiogroup"] label:hover { background: rgba(255,255,255,.07); }
-[data-testid="stSidebar"] label[data-testid="stRadioOption"] > div > div:not([data-testid="stMarkdownContainer"]) { display:none; }
-[data-testid="stSidebar"] label[data-testid="stRadioOption"][data-selected="true"],
-[data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) {
-  background: rgba(18,183,106,.18); box-shadow: inset 3px 0 0 var(--emerald);
-}
-[data-testid="stSidebar"] label[data-testid="stRadioOption"][data-selected="true"] p,
-[data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) p { color:#fff; font-weight:700; }
-[data-testid="stSidebar"] [role="radiogroup"] p { font-size: .95rem; font-weight: 500; }
-.wv-brand { display:flex; align-items:center; gap:.7rem; padding:.4rem .3rem 1.4rem; }
-.wv-brand-mark { width:40px; height:40px; border-radius:12px; background:linear-gradient(145deg,#1FCB7C,#0B8F52);
-  display:grid; place-items:center; box-shadow:0 6px 18px rgba(18,183,106,.35); }
-.wv-brand-name { font-family:var(--serif); font-size:1.4rem; font-weight:600; color:#fff; line-height:1.05; }
-.wv-brand-sub { font-size:.74rem; color:#9DB8A5; margin-top:2px; }
-.wv-side-status { margin-top:1.6rem; padding:.9rem 1rem; border-radius:12px;
-  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); font-size:.82rem; line-height:1.5; }
-.wv-side-status b { color:#fff; }
-.wv-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--emerald);
-  margin-right:.5rem; box-shadow:0 0 0 4px rgba(18,183,106,.2); }
-.wv-dot.off { background:var(--red); box-shadow:0 0 0 4px rgba(194,73,61,.2); }
-.wv-side-foot { margin-top:1rem; font-size:.72rem; color:#7E9A87; }
- 
-/* type */
-h1, h2, h3 { font-family: var(--serif); color: var(--charcoal); letter-spacing: -.01em; }
-.wv-page-title { font-family:var(--serif); font-size:2.15rem; font-weight:600; margin:0; color:var(--forest); line-height:1.15; }
-.wv-page-sub { color:var(--ink-2); font-size:1.02rem; margin:.45rem 0 1.6rem; max-width:62ch; line-height:1.55; }
-.wv-h3 { font-family:var(--serif); font-size:1.12rem; font-weight:600; color:var(--forest); margin:.2rem 0 .8rem; }
-.wv-h2 { font-family:var(--serif); font-size:1.35rem; font-weight:600; color:var(--forest); margin:2rem 0 .8rem; }
- 
-/* hero */
-.wv-hero { position:relative; overflow:hidden; border-radius:22px; padding:2.6rem 2.8rem;
-  background: radial-gradient(1200px 400px at 85% -10%, #1B5239 0%, transparent 60%), var(--forest);
-  color:#fff; display:grid; grid-template-columns: 1.35fr 1fr; gap:2rem; align-items:center;
-  box-shadow:0 18px 40px rgba(14,43,30,.22); }
-.wv-hero::before { content:""; position:absolute; inset:0; background-image:__FURROW__; background-size:cover;
-  opacity:.16; -webkit-mask-image:linear-gradient(90deg,transparent 15%,#000 75%); mask-image:linear-gradient(90deg,transparent 15%,#000 75%); }
+html, body, [class*="st-"], .stApp { font-family:var(--sans); }
+.stApp { background:radial-gradient(900px 500px at 85% -10%,rgba(28,93,59,.24),transparent 65%),var(--ivory); color:var(--charcoal); }
+[data-testid="stMainBlockContainer"], .block-container { padding-top:1.2rem; padding-bottom:3.5rem; max-width:1380px; }
+#MainMenu, footer, [data-testid="stDecoration"], .stDeployButton, [data-testid="stAppDeployButton"], [data-testid="stStatusWidget"] { display:none !important; }
+header[data-testid="stHeader"] { background:transparent; }
+
+/* Top navigation */
+[data-testid="stHorizontalBlock"]:has(.wv-brand) { align-items:center; gap:.45rem; padding:.65rem .8rem; margin:.1rem 0 1.35rem;
+  background:rgba(16,35,25,.96); border:1px solid #294536; border-radius:18px;
+  box-shadow:0 12px 32px rgba(0,0,0,.22); }
+.wv-brand { display:flex; align-items:center; gap:.65rem; min-height:42px; }
+.wv-brand-mark { width:38px; height:38px; flex:none; border-radius:12px; background:linear-gradient(145deg,#2BE69A,#087D4B);
+  display:grid; place-items:center; box-shadow:0 5px 18px rgba(32,216,137,.22); }
+.wv-brand-name { font-family:var(--serif); font-size:1.25rem; font-weight:600; color:#F5FFF8; line-height:1.05; }
+.wv-brand-sub { font-size:.68rem; color:#A7C5B1; margin-top:3px; white-space:nowrap; }
+.wv-status { display:flex; justify-content:flex-end; align-items:center; gap:.45rem; color:#C8D9CE; font-size:.76rem; font-weight:700; white-space:nowrap; }
+.wv-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--emerald); box-shadow:0 0 0 4px rgba(32,216,137,.13); }
+.wv-dot.off { background:var(--red); box-shadow:0 0 0 4px rgba(255,129,120,.13); }
+.wv-topnav-rule { height:1px; background:linear-gradient(90deg,transparent,#31513E,transparent); margin:-.6rem 0 1.5rem; }
+
+/* Global typography */
+h1,h2,h3 { font-family:var(--serif); color:var(--charcoal); letter-spacing:-.01em; }
+p, li, label, .stMarkdown, .stCaption { color:var(--charcoal); }
+.wv-page-title { font-family:var(--serif); font-size:2.2rem; font-weight:600; margin:0; color:#F1F8F3; line-height:1.15; }
+.wv-page-sub { color:var(--ink-2); font-size:1rem; margin:.45rem 0 1.6rem; max-width:68ch; line-height:1.6; }
+.wv-h3 { font-family:var(--serif); font-size:1.12rem; font-weight:600; color:#EAF6EE; margin:.2rem 0 .8rem; }
+.wv-h2 { font-family:var(--serif); font-size:1.35rem; font-weight:600; color:#EAF6EE; margin:2rem 0 .8rem; }
+
+/* Hero and model card */
+.wv-hero { position:relative; overflow:hidden; border:1px solid #315541; border-radius:22px; padding:2.5rem 2.6rem;
+  background:radial-gradient(1000px 380px at 85% -10%,#24583B 0%,transparent 62%),linear-gradient(135deg,#102D20,#0B1B12);
+  color:#fff; display:grid; grid-template-columns:1.35fr 1fr; gap:2rem; align-items:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.28); }
+.wv-hero::before { content:""; position:absolute; inset:0; background-image:__FURROW__; background-size:cover; opacity:.13;
+  -webkit-mask-image:linear-gradient(90deg,transparent 10%,#000 80%); mask-image:linear-gradient(90deg,transparent 10%,#000 80%); }
 .wv-hero > * { position:relative; }
-.wv-hero h1 { font-family:var(--serif); color:#fff; font-size:2.7rem; font-weight:600; line-height:1.1; margin:0 0 1rem; }
-.wv-hero p { color:#C7DACB; font-size:1.05rem; line-height:1.6; max-width:52ch; margin:0; }
-.wv-model-card { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.14);
-  border-radius:16px; padding:1.3rem 1.4rem; backdrop-filter: blur(6px); }
-.wv-model-card .t { font-weight:700; font-size:.95rem; margin-bottom:.8rem; color:#fff; }
-.wv-kv { display:flex; justify-content:space-between; gap:1rem; padding:.5rem 0; border-top:1px solid rgba(255,255,255,.1);
-  font-size:.9rem; color:#C7DACB; }
-.wv-kv b { color:#fff; font-weight:600; text-align:right; }
- 
-/* stat cards */
+.wv-hero h1 { font-family:var(--serif); color:#fff; font-size:2.65rem; font-weight:600; line-height:1.1; margin:0 0 1rem; }
+.wv-hero p { color:#C7DACB; font-size:1.02rem; line-height:1.65; max-width:54ch; margin:0; }
+.wv-model-card { background:rgba(255,255,255,.065); border:1px solid rgba(255,255,255,.15); border-radius:16px; padding:1.25rem 1.35rem; backdrop-filter:blur(6px); }
+.wv-model-card .t { font-weight:800; font-size:.95rem; margin-bottom:.8rem; color:#fff; }
+.wv-kv { display:flex; justify-content:space-between; gap:1rem; padding:.55rem 0; border-top:1px solid rgba(255,255,255,.12); font-size:.88rem; color:#C7DACB; }
+.wv-kv b { color:#fff; font-weight:700; text-align:right; overflow-wrap:anywhere; }
+
+/* Cards and panels */
 .wv-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(165px,1fr)); gap:1rem; margin:1.4rem 0 .4rem; }
-.wv-stat { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:1.1rem 1.25rem; }
-.wv-stat.accent { background:linear-gradient(160deg,#fff,#EAF7F0); border-color:#BFE6D0; }
-.wv-stat-label { color:var(--ink-2); font-size:.84rem; font-weight:600; }
-.wv-stat-value { font-family:var(--serif); font-size:2.15rem; font-weight:600; color:var(--forest); line-height:1.2; margin-top:.2rem; }
-.wv-stat-note { color:#7A857E; font-size:.78rem; margin-top:.15rem; }
- 
-/* panels */
-.wv-panel { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:1.4rem 1.5rem; }
-.wv-panel h3 { font-family:var(--serif); font-size:1.12rem; font-weight:600; margin:0 0 .7rem; color:var(--forest); }
-.wv-panel p, .wv-panel li { color:var(--ink-2); font-size:.95rem; line-height:1.6; }
-.wv-chip { display:inline-block; padding:.3rem .75rem; margin:0 .4rem .5rem 0; border-radius:999px;
-  background:#E8F5EE; color:var(--emerald-d); font-weight:600; font-size:.85rem; border:1px solid #C6E8D6; }
+.wv-stat { background:linear-gradient(145deg,#172B20,#112219); border:1px solid var(--line); border-radius:16px; padding:1.1rem 1.25rem; box-shadow:0 8px 22px rgba(0,0,0,.13); }
+.wv-stat.accent { background:linear-gradient(145deg,#153C2A,#10291D); border-color:#28734E; }
+.wv-stat-label { color:#B7C9BD; font-size:.82rem; font-weight:700; }
+.wv-stat-value { font-family:var(--serif); font-size:2.1rem; font-weight:600; color:#F2FFF6; line-height:1.2; margin-top:.2rem; }
+.wv-stat-note { color:#8FA697; font-size:.76rem; margin-top:.2rem; }
+.wv-panel { background:linear-gradient(145deg,#14271C,#102017); border:1px solid var(--line); border-radius:18px; padding:1.35rem 1.45rem; box-shadow:0 10px 26px rgba(0,0,0,.12); }
+.wv-panel h3 { font-family:var(--serif); font-size:1.12rem; font-weight:600; margin:0 0 .7rem; color:#EAF6EE; }
+.wv-panel p,.wv-panel li { color:#B7C9BD; font-size:.93rem; line-height:1.65; }
+.wv-chip { display:inline-block; padding:.3rem .75rem; margin:0 .4rem .5rem 0; border-radius:999px; background:#173C2A;
+  color:#8FF0B9; font-weight:700; font-size:.8rem; border:1px solid #2D6847; }
 .wv-steps { list-style:none; counter-reset:s; padding:0; margin:0; }
-.wv-steps li { counter-increment:s; display:flex; gap:.9rem; padding:.7rem 0; border-top:1px solid var(--line); }
+.wv-steps li { counter-increment:s; display:flex; gap:.9rem; padding:.7rem 0; border-top:1px solid #294536; color:#B7C9BD; }
 .wv-steps li:first-child { border-top:0; }
-.wv-steps li::before { content:counter(s); flex:none; width:28px; height:28px; border-radius:50%;
-  background:var(--forest); color:#fff; font-weight:700; font-size:.82rem; display:grid; place-items:center; }
-.wv-steps b { color:var(--charcoal); }
-.wv-empty { border:1.5px dashed #B8CDBE; border-radius:16px; padding:2.4rem 1.5rem; text-align:center;
-  color:var(--ink-2); background:rgba(255,255,255,.55); }
-.wv-empty b { display:block; font-family:var(--serif); font-size:1.15rem; color:var(--forest); margin-bottom:.3rem; }
+.wv-steps li::before { content:counter(s); flex:none; width:28px; height:28px; border-radius:50%; background:#1D7048; color:#fff; font-weight:800; font-size:.82rem; display:grid; place-items:center; }
+.wv-steps b { color:#F0F8F2; }
+.wv-empty { border:1.5px dashed #42644F; border-radius:16px; padding:2.3rem 1.4rem; text-align:center; color:#B4C6B9; background:rgba(20,39,28,.55); }
+.wv-empty b { display:block; font-family:var(--serif); font-size:1.15rem; color:#F1F8F3; margin-bottom:.3rem; }
 .wv-band { display:inline-block; padding:.18rem .6rem; border-radius:999px; font-size:.78rem; font-weight:700; }
-.wv-note { border-left:3px solid var(--amber); background:#FBF5E6; padding:.8rem 1rem; border-radius:0 10px 10px 0;
-  color:#5E4A16; font-size:.9rem; line-height:1.55; }
- 
-/* widgets */
-.stButton > button, .stDownloadButton > button { border-radius:12px; font-weight:700; padding:.6rem 1.2rem;
-  border:1px solid var(--line); transition: transform .12s ease, box-shadow .12s ease; }
-.stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
-  background:linear-gradient(180deg,#14C373,#0B9A57); border:0; color:#fff; box-shadow:0 6px 16px rgba(18,183,106,.28); }
-.stButton > button:hover, .stDownloadButton > button:hover { transform: translateY(-1px); }
-[data-testid="stFileUploaderDropzone"] { border:1.5px dashed #9DB8A5; background:#fff; border-radius:16px; padding:1.6rem; }
-[data-testid="stFileUploaderDropzone"]:hover { border-color:var(--emerald); background:#F4FBF7; }
-[data-testid="stImage"] img { border-radius:14px; border:1px solid var(--line); }
-[data-testid="stDataFrame"] { border:1px solid var(--line); border-radius:14px; overflow:hidden; }
-.stTabs [data-baseweb="tab-list"] { gap:.4rem; border-bottom:1px solid var(--line); }
-.stTabs [data-baseweb="tab"] { font-weight:600; padding:.55rem 1rem; }
-.stTabs [aria-selected="true"] { color:var(--emerald-d); }
-button:focus-visible, [role="radio"]:focus-visible { outline:3px solid rgba(18,183,106,.55) !important; outline-offset:2px; }
- 
-@media (max-width: 900px){
-  .wv-hero { grid-template-columns:1fr; padding:1.8rem 1.5rem; }
-  .wv-hero h1 { font-size:2rem; }
-  .wv-page-title { font-size:1.7rem; }
+.wv-note { border-left:3px solid var(--amber); background:#302A18; padding:.8rem 1rem; border-radius:0 10px 10px 0; color:#F2DDA6; font-size:.9rem; line-height:1.55; }
+
+/* Buttons: force readable foregrounds on every Streamlit button variant. */
+.stButton > button, .stDownloadButton > button, .stLinkButton > a,
+[data-testid="stBaseButton-primary"], [data-testid="stBaseButton-secondary"] {
+  color:#F7FFF9 !important; -webkit-text-fill-color:#F7FFF9 !important;
+  background:#1B3426 !important; border:1px solid #42634D !important; border-radius:11px !important;
+  font-family:var(--sans) !important; font-weight:800 !important; min-height:42px;
+  box-shadow:0 4px 12px rgba(0,0,0,.18); transition:background .15s ease,border-color .15s ease,transform .15s ease,box-shadow .15s ease;
 }
-@media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+.stButton > button *, .stDownloadButton > button *, .stLinkButton > a *,
+[data-testid="stBaseButton-primary"] *, [data-testid="stBaseButton-secondary"] * {
+  color:#F7FFF9 !important; -webkit-text-fill-color:#F7FFF9 !important; opacity:1 !important;
+}
+.stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"],
+[data-testid="stBaseButton-primary"] {
+  color:#06180E !important; -webkit-text-fill-color:#06180E !important;
+  background:linear-gradient(180deg,#46E9A0,#1DBB73) !important; border:1px solid #4BE8A2 !important;
+  box-shadow:0 7px 18px rgba(22,190,112,.22);
+}
+.stButton > button[kind="primary"] *, .stDownloadButton > button[kind="primary"] *, [data-testid="stBaseButton-primary"] * {
+  color:#06180E !important; -webkit-text-fill-color:#06180E !important;
+}
+.stButton > button:hover, .stDownloadButton > button:hover, .stLinkButton > a:hover,
+[data-testid="stBaseButton-primary"]:hover, [data-testid="stBaseButton-secondary"]:hover {
+  transform:translateY(-1px); border-color:#65E6A6 !important; box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
+.stButton > button:disabled, .stDownloadButton > button:disabled,
+[data-testid="stBaseButton-primary"]:disabled, [data-testid="stBaseButton-secondary"]:disabled {
+  background:#26352C !important; color:#AAB9AE !important; -webkit-text-fill-color:#AAB9AE !important;
+  border-color:#3A4B3F !important; opacity:1 !important; cursor:not-allowed;
+}
+.stButton > button:disabled *, .stDownloadButton > button:disabled * { color:#AAB9AE !important; -webkit-text-fill-color:#AAB9AE !important; }
+button:focus-visible,[role="radio"]:focus-visible { outline:3px solid rgba(32,216,137,.7) !important; outline-offset:3px; }
+
+/* Inputs, tabs, tables and chart containers */
+.stApp label,.stApp [data-testid="stWidgetLabel"] p { color:#DCE9DF !important; }
+.stTextInput input,.stNumberInput input,.stTextArea textarea,[data-baseweb="select"] > div {
+  background:#14271C !important; color:#F1F8F3 !important; border-color:#3A5945 !important;
+}
+.stSlider [data-baseweb="slider"] div { color:#DCE9DF; }
+[data-testid="stFileUploaderDropzone"] { border:1.5px dashed #426B50; background:#14271C; border-radius:16px; padding:1.3rem; }
+[data-testid="stFileUploaderDropzone"] * { color:#E5F2E8 !important; }
+[data-testid="stFileUploaderDropzone"] button { background:#1D7048 !important; color:#fff !important; border-color:#328A5E !important; }
+[data-testid="stFileUploaderDropzone"]:hover { border-color:var(--emerald); background:#183324; }
+[data-testid="stImage"] img { border-radius:14px; border:1px solid #35513F; }
+[data-testid="stDataFrame"] { border:1px solid #294536; border-radius:14px; overflow:hidden; }
+.stTabs [data-baseweb="tab-list"] { gap:.4rem; border-bottom:1px solid #294536; }
+.stTabs [data-baseweb="tab"] { color:#B7C9BD !important; font-weight:700; padding:.55rem 1rem; }
+.stTabs [aria-selected="true"] { color:#62E6A5 !important; }
+[data-testid="stExpander"] { background:#12231A; border:1px solid #294536; border-radius:14px; }
+[data-testid="stExpander"] summary, [data-testid="stExpander"] summary p { color:#E7F2EA !important; }
+[data-testid="stAlert"] { border-radius:12px; }
+
+@media (max-width:900px) {
+  .wv-hero { grid-template-columns:1fr; padding:1.7rem 1.4rem; }
+  .wv-hero h1 { font-size:2rem; }
+  .wv-page-title { font-size:1.8rem; }
+  .wv-brand-sub { display:none; }
+}
+@media (max-width:600px) {
+  [data-testid="stMainBlockContainer"],.block-container { padding-left:1rem; padding-right:1rem; }
+  .wv-hero { border-radius:16px; }
+  .wv-stat-value { font-size:1.7rem; }
+}
+@media (prefers-reduced-motion:reduce) { * { transition:none !important; } }
 </style>
 """.replace("__FURROW__", _furrow_svg())
- 
- 
 def inject_css() -> None:
     st.markdown(CSS, unsafe_allow_html=True)
  
@@ -403,14 +414,23 @@ def empty_state(title: str, body: str) -> None:
 def style_chart(chart: alt.Chart, height: int = 280) -> alt.Chart:
     return (
         chart.properties(height=height)
-        .configure_view(strokeWidth=0)
-        .configure_axis(labelColor="#4A544E", titleColor="#4A544E", gridColor="#E6ECE6",
-                        domainColor="#C9D5CB", labelFont="Manrope", titleFont="Manrope")
-        .configure_legend(labelFont="Manrope", titleFont="Manrope")
+        .configure_view(strokeWidth=0, fill="#14271C")
+        .configure_axis(labelColor="#C3D4C8", titleColor="#DDE9E0", gridColor="#294536",
+                        domainColor="#42634D", labelFont="Manrope", titleFont="Manrope")
+        .configure_legend(labelColor="#DDE9E0", titleColor="#DDE9E0", labelFont="Manrope", titleFont="Manrope")
+        .configure(background="#14271C")
     )
+
+
+def show_chart(chart: alt.Chart) -> None:
+    """Render charts across Streamlit versions with different width APIs."""
+    try:
+        st.altair_chart(chart, use_container_width=True)
+    except TypeError:
+        st.altair_chart(chart)
  
  
-EMERALD_RANGE = ["#12B76A", "#0E2B1E", "#5F8F6B", "#D9A441", "#2F6F4F", "#9BCBA8", "#1E2421", "#C2493D"]
+EMERALD_RANGE = ["#35E39A", "#8BE8B2", "#4DBB7D", "#E6BD63", "#2D8F5B", "#A6DDB8", "#D4F1DD", "#FF8178"]
  
  
 def df_json_safe(df: pd.DataFrame) -> list[dict]:
@@ -477,28 +497,31 @@ Low under 50%) are triage aids, not accuracy guarantees. Results depend on the m
 # --------------------------------------------------------------------------
 # Pages
 # --------------------------------------------------------------------------
-def sidebar(info: dict | None, error: str | None) -> None:
-    with st.sidebar:
+def top_navigation(info: dict | None, error: str | None) -> None:
+    """Responsive top navigation with explicit high-contrast button styles."""
+    nav_cols = st.columns([2.0, 1.0, 1.2, 1.0, .85, 1.35], gap="small")
+    with nav_cols[0]:
         st.markdown(
             '<div class="wv-brand"><div class="wv-brand-mark">'
-            '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" '
+            '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" '
             'stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/>'
             '<path d="M2 21c0-3 1.9-5.5 6-7"/></svg></div>'
-            '<div><div class="wv-brand-name">WeedVision</div>'
-            '<div class="wv-brand-sub">AI weed detection for crops</div></div></div>',
+            '<div><div class="wv-brand-name">WeedVision</div><div class="wv-brand-sub">AI weed detection</div></div></div>',
             unsafe_allow_html=True,
         )
-        st.radio("Navigation", list(NAV_LABELS), format_func=NAV_LABELS.get, key="nav",
-                 label_visibility="collapsed")
+    current = st.session_state.get("nav", "dashboard")
+    items = [("dashboard", "Dashboard"), ("detect", "Detect weeds"), ("analytics", "Analytics"), ("about", "About")]
+    for col, (key, label) in zip(nav_cols[1:5], items):
+        with col:
+            st.button(label, key=f"topnav_{key}", type="primary" if current == key else "secondary",
+                      on_click=goto, args=(key,), width="stretch")
+    with nav_cols[5]:
         if info:
-            status = (f'<span class="wv-dot"></span><b>Model ready</b><br>{esc(info["file"])} &middot; '
-                      f'{len(info["classes"])} class{"es" if len(info["classes"]) != 1 else ""}')
+            st.markdown('<div class="wv-status"><span class="wv-dot"></span>MODEL READY</div>', unsafe_allow_html=True)
         else:
-            status = '<span class="wv-dot off"></span><b>Model unavailable</b><br>See the Dashboard for details'
-        st.markdown(f'<div class="wv-side-status">{status}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="wv-side-foot">WeedVision v{APP_VERSION}</div>', unsafe_allow_html=True)
- 
- 
+            st.markdown('<div class="wv-status"><span class="wv-dot off"></span>MODEL UNAVAILABLE</div>', unsafe_allow_html=True)
+
+
 def page_dashboard(info: dict) -> None:
     params = f'{info["params_m"]:.1f} M' if info["params_m"] else "n/a"
     st.markdown(
@@ -546,7 +569,7 @@ def page_dashboard(info: dict) -> None:
             unsafe_allow_html=True,
         )
         st.write("")
-        st.button("Analyse an image", type="primary", on_click=goto, args=("detect",), use_container_width=True)
+        st.button("Analyse an image", type="primary", on_click=goto, args=("detect",), width="stretch")
     with right:
         st.markdown('<div class="wv-h3">Recent analyses</div>', unsafe_allow_html=True)
         if runs.empty:
@@ -555,7 +578,7 @@ def page_dashboard(info: dict) -> None:
             recent = runs.sort_values("Run", ascending=False).head(6)[
                 ["Time", "Image", "Detections", "Avg confidence", "Coverage (%)"]]
             st.dataframe(
-                recent, hide_index=True, use_container_width=True,
+                recent, hide_index=True, width="stretch",
                 column_config={
                     "Avg confidence": st.column_config.NumberColumn(format="percent"),
                     "Coverage (%)": st.column_config.NumberColumn(format="%.1f%%"),
@@ -566,7 +589,7 @@ def page_dashboard(info: dict) -> None:
 def detection_table(det: pd.DataFrame) -> None:
     view = det.copy()
     st.dataframe(
-        view, hide_index=True, use_container_width=True,
+        view, hide_index=True, width="stretch",
         column_config={
             "Confidence": st.column_config.ProgressColumn(
                 "Confidence", min_value=0.0, max_value=1.0, format="percent"),
@@ -580,10 +603,10 @@ def render_result(filename: str, original: Image.Image, out: dict, info: dict) -
     c1, c2 = st.columns(2, gap="large")
     with c1:
         st.markdown("**Original**")
-        st.image(original, use_container_width=True)
+        st.image(original, width="stretch")
     with c2:
         st.markdown("**WeedVision result**")
-        st.image(out["annotated"], use_container_width=True)
+        st.image(out["annotated"], width="stretch")
  
     avg = f'{det["Confidence"].mean():.1%}' if not det.empty else "n/a"
     top = f'{det["Confidence"].max():.1%}' if not det.empty else "n/a"
@@ -611,7 +634,7 @@ def render_result(filename: str, original: Image.Image, out: dict, info: dict) -
                 color=alt.Color("Class:N", scale=alt.Scale(range=EMERALD_RANGE), legend=None),
                 tooltip=["Class", "Count"],
             )
-            st.altair_chart(style_chart(chart, 220), use_container_width=True)
+            show_chart(style_chart(chart, 220))
  
     h2("Export")
     stem = Path(filename).stem or "image"
@@ -630,13 +653,13 @@ def render_result(filename: str, original: Image.Image, out: dict, info: dict) -
     }
     d1, d2, d3, d4 = st.columns(4)
     d1.download_button("Annotated image (PNG)", png_bytes(out["annotated"]), f"weedvision_{stem}_{stamp}.png",
-                       "image/png", use_container_width=True, type="primary")
+                       "image/png", width="stretch", type="primary")
     d2.download_button("Report (HTML)", build_html_report(filename, out, info), f"weedvision_report_{stem}_{stamp}.html",
-                       "text/html", use_container_width=True)
+                       "text/html", width="stretch")
     d3.download_button("Detections (CSV)", det.to_csv(index=False), f"weedvision_{stem}_{stamp}.csv",
-                       "text/csv", use_container_width=True, disabled=det.empty)
+                       "text/csv", width="stretch", disabled=det.empty)
     d4.download_button("Data (JSON)", json.dumps(payload, indent=2), f"weedvision_{stem}_{stamp}.json",
-                       "application/json", use_container_width=True)
+                       "application/json", width="stretch")
  
  
 def page_detect(model, info: dict) -> None:
@@ -650,7 +673,11 @@ def page_detect(model, info: dict) -> None:
         shot = st.camera_input("Take a photo", label_visibility="collapsed", key="camera")
  
     source = uploaded or shot
-    with st.expander("Detection settings", expanded=True):
+    # Use a regular section instead of Streamlit's expander. This avoids the
+    # overlapping/duplicated expander title while preserving all controls.
+    st.markdown('<div class="wv-h3" style="margin:1rem 0 .75rem">Detection settings</div>',
+                unsafe_allow_html=True)
+    with st.container(border=True):
         s1, s2, s3 = st.columns(3, gap="large")
         conf = s1.slider("Confidence threshold", 0.05, 0.95, 0.25, 0.05,
                          help="Detections scoring below this are hidden. Raise it to reduce false alarms.")
@@ -690,7 +717,7 @@ def page_detect(model, info: dict) -> None:
         left, right = st.columns(2, gap="large")
         with left:
             st.markdown("**Input image**")
-            st.image(image, use_container_width=True)
+            st.image(image, width="stretch")
             st.caption(f"{filename} - {image.size[0]} x {image.size[1]} px")
         with right:
             st.markdown("**WeedVision result**")
@@ -729,7 +756,7 @@ def page_analytics(info: dict) -> None:
                 y=alt.Y("Count:Q", title="Detections", axis=alt.Axis(tickMinStep=1)),
                 color=alt.Color("Class:N", scale=alt.Scale(range=EMERALD_RANGE), legend=None),
                 tooltip=["Class", "Count"])
-            st.altair_chart(style_chart(chart), use_container_width=True)
+            show_chart(style_chart(chart))
     with b:
         st.markdown("**Confidence distribution**")
         if dets.empty:
@@ -740,7 +767,7 @@ def page_analytics(info: dict) -> None:
                         axis=alt.Axis(format="%")),
                 y=alt.Y("count():Q", title="Detections", axis=alt.Axis(tickMinStep=1)),
                 tooltip=[alt.Tooltip("count():Q", title="Detections")])
-            st.altair_chart(style_chart(chart), use_container_width=True)
+            show_chart(style_chart(chart))
  
     h2("Image by image")
     c, d = st.columns(2, gap="large")
@@ -751,7 +778,7 @@ def page_analytics(info: dict) -> None:
             x=alt.X("Label:N", sort=None, title="Run", axis=alt.Axis(labelAngle=0)),
             y=alt.Y("Detections:Q", title="Detections", axis=alt.Axis(tickMinStep=1)),
             tooltip=["Run", "Image", "Detections"])
-        st.altair_chart(style_chart(chart), use_container_width=True)
+        show_chart(style_chart(chart))
     with d:
         st.markdown("**Image area covered (%)**")
         chart = alt.Chart(runs_plot).mark_line(color="#12B76A", point=alt.OverlayMarkDef(color="#0B8F52", size=70),
@@ -759,7 +786,7 @@ def page_analytics(info: dict) -> None:
             x=alt.X("Label:N", sort=None, title="Run", axis=alt.Axis(labelAngle=0)),
             y=alt.Y("Coverage (%):Q", title="Coverage (%)"),
             tooltip=["Run", "Image", "Coverage (%)"])
-        st.altair_chart(style_chart(chart), use_container_width=True)
+        show_chart(style_chart(chart))
  
     if not dets.empty and dets["Class"].nunique() > 1:
         st.markdown("**Confidence by class**")
@@ -767,12 +794,12 @@ def page_analytics(info: dict) -> None:
             x=alt.X("Class:N", title=None, axis=alt.Axis(labelAngle=0)),
             y=alt.Y("Confidence:Q", title="Confidence", axis=alt.Axis(format="%"), scale=alt.Scale(domain=[0, 1])),
             color=alt.Color("Class:N", scale=alt.Scale(range=EMERALD_RANGE), legend=None))
-        st.altair_chart(style_chart(chart), use_container_width=True)
+        show_chart(style_chart(chart))
  
     h2("Session log")
     log = runs.sort_values("Run", ascending=False)
     st.dataframe(
-        log, hide_index=True, use_container_width=True,
+        log, hide_index=True, width="stretch",
         column_config={
             "Avg confidence": st.column_config.NumberColumn(format="percent"),
             "Threshold": st.column_config.NumberColumn(format="%.2f"),
@@ -780,33 +807,66 @@ def page_analytics(info: dict) -> None:
     )
     x1, x2, x3, _ = st.columns([1, 1, 1, 2])
     x1.download_button("Session log (CSV)", log.to_csv(index=False), "weedvision_session_log.csv", "text/csv",
-                       use_container_width=True, type="primary")
+                       width="stretch", type="primary")
     x2.download_button("All detections (CSV)", dets.to_csv(index=False), "weedvision_all_detections.csv", "text/csv",
-                       use_container_width=True, disabled=dets.empty)
-    if x3.button("Clear session data", use_container_width=True):
+                       width="stretch", disabled=dets.empty)
+    if x3.button("Clear session data", width="stretch"):
         st.session_state["runs"], st.session_state["dets"], st.session_state["last"] = [], [], None
         st.rerun()
     st.caption("Analytics are kept in memory for this browser session only. Nothing is stored on the server.")
  
  
+def find_training_csv() -> Path | None:
+    """Find results.csv beside app.py or inside this project's Ultralytics runs folder."""
+    candidates = []
+    if TRAINING_CSV.is_file():
+        candidates.append(TRAINING_CSV)
+    runs_dir = APP_DIR / "runs"
+    if runs_dir.is_dir():
+        candidates.extend(
+            path for path in runs_dir.rglob("results.csv")
+            if path.is_file() and path not in candidates
+        )
+    return max(candidates, key=lambda path: path.stat().st_mtime) if candidates else None
+
+
 def training_metrics() -> dict | None:
-    """Read final-epoch metrics from an Ultralytics results.csv, if one is shipped."""
-    if not TRAINING_CSV.exists():
+    """Read the final valid metrics row from the latest Ultralytics training log."""
+    csv_path = find_training_csv()
+    if csv_path is None:
         return None
     try:
-        df = pd.read_csv(TRAINING_CSV)
-        df.columns = [c.strip() for c in df.columns]
-        last = df.iloc[-1]
+        df = pd.read_csv(csv_path)
+        df.columns = [str(column).strip() for column in df.columns]
+        if df.empty:
+            return None
         wanted = {
-            "metrics/precision(B)": "Precision", "metrics/recall(B)": "Recall",
-            "metrics/mAP50(B)": "mAP@50", "metrics/mAP50-95(B)": "mAP@50-95",
+            "metrics/precision(B)": "Precision",
+            "metrics/recall(B)": "Recall",
+            "metrics/mAP50(B)": "mAP@50",
+            "metrics/mAP50-95(B)": "mAP@50-95",
         }
-        found = {label: float(last[col]) for col, label in wanted.items() if col in df.columns}
+        metric_columns = [column for column in wanted if column in df.columns]
+        if not metric_columns:
+            return None
+        valid_rows = df.dropna(subset=metric_columns, how="all")
+        if valid_rows.empty:
+            return None
+        last = valid_rows.iloc[-1]
+        found = {
+            label: float(last[column])
+            for column, label in wanted.items()
+            if column in df.columns and pd.notna(last[column])
+        }
         if not found:
             return None
-        found["Epochs"] = int(last["epoch"]) + 1 if "epoch" in df.columns else len(df)
+        found["Epochs"] = (
+            int(float(last["epoch"])) + 1
+            if "epoch" in df.columns and pd.notna(last.get("epoch"))
+            else len(df)
+        )
         return found
-    except Exception:
+    except (OSError, ValueError, TypeError, pd.errors.ParserError):
         return None
  
  
@@ -835,10 +895,10 @@ def page_about(info: dict) -> None:
         params = f'{info["params_m"]:.1f} M' if info["params_m"] else "n/a"
         st.markdown(
             '<div class="wv-panel"><h3>Model card</h3>'
-            f'<div class="wv-kv" style="color:#4A544E;border-color:#E6ECE6"><span>Weights file</span><b style="color:#1E2421">{esc(info["file"])}</b></div>'
-            f'<div class="wv-kv" style="color:#4A544E;border-color:#E6ECE6"><span>File size</span><b style="color:#1E2421">{info["size_mb"]:.1f} MB</b></div>'
-            f'<div class="wv-kv" style="color:#4A544E;border-color:#E6ECE6"><span>Task</span><b style="color:#1E2421">{esc(info["task"].capitalize())}</b></div>'
-            f'<div class="wv-kv" style="color:#4A544E;border-color:#E6ECE6"><span>Parameters</span><b style="color:#1E2421">{params}</b></div>'
+            f'<div class="wv-kv" style="color:#B7C9BD;border-color:#294536"><span>Weights file</span><b style="color:#F1F8F3">{esc(info["file"])}</b></div>'
+            f'<div class="wv-kv" style="color:#B7C9BD;border-color:#294536"><span>File size</span><b style="color:#F1F8F3">{info["size_mb"]:.1f} MB</b></div>'
+            f'<div class="wv-kv" style="color:#B7C9BD;border-color:#294536"><span>Task</span><b style="color:#F1F8F3">{esc(info["task"].capitalize())}</b></div>'
+            f'<div class="wv-kv" style="color:#B7C9BD;border-color:#294536"><span>Parameters</span><b style="color:#F1F8F3">{params}</b></div>'
             f'<div style="margin-top:1rem"><p style="margin-bottom:.5rem"><b>Classes</b></p>{chips}</div></div>',
             unsafe_allow_html=True,
         )
@@ -850,11 +910,19 @@ def page_about(info: dict) -> None:
             stat_grid(cards)
         else:
             st.write("")
-            st.markdown(
-                '<div class="wv-note"><b>Training metrics are not bundled.</b> Add the <code>results.csv</code> from your '
-                'Ultralytics training run next to <code>app.py</code> and precision, recall and mAP will appear here automatically.</div>',
-                unsafe_allow_html=True,
-            )
+            if find_training_csv() is None:
+                st.info(
+                    "Training metrics are unavailable because no Ultralytics results.csv "
+                    "was found. Keep the training output in this project's runs folder "
+                    "(for example, runs/detect/train/results.csv), or place results.csv "
+                    "beside app.py. Detection with best.pt will continue to work."
+                )
+            else:
+                st.warning(
+                    "A results.csv file was found, but it does not contain readable "
+                    "precision, recall or mAP columns. Check that it came from an "
+                    "Ultralytics detection training run."
+                )
  
     h2("Using the results responsibly")
     st.markdown(
@@ -895,7 +963,7 @@ def main() -> None:
     except Exception as exc:  # shown in the UI; the app stays up
         error = f"{type(exc).__name__}: {exc}"
  
-    sidebar(info, error)
+    top_navigation(info, error)
     if error:
         page_model_error(error)
         return
